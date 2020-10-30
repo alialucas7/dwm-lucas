@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-/*Esto es un comentario de prueba jeje :P */
+
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -19,7 +19,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -56,9 +56,8 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-//static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "xfce4-terminal", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -113,4 +112,59 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
+
+
+#define BATT_NOW        "/sys/class/power_supply/BAT0/charge_now"
+#define BATT_FULL       "/sys/class/power_supply/BAT0/charge_full"
+#define BATT_STATUS       "/sys/class/power_supply/BAT0/status"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
+char *
+smprintf(char *fmt, ...)
+{
+	va_list fmtargs;
+	char *buf = NULL;
+
+	va_start(fmtargs, fmt);
+	if (vasprintf(&buf, fmt, fmtargs) == -1){
+		fprintf(stderr, "malloc vasprintf\n");
+		exit(1);
+    }
+	va_end(fmtargs);
+
+	return buf;
+}
+
+char *
+getbattery(){
+    long lnum1, lnum2 = 0;
+    char *status = malloc(sizeof(char)*12);
+    char s = '?';
+    FILE *fp = NULL;
+    if ((fp = fopen(BATT_NOW, "r"))) {
+        fscanf(fp, "%ld\n", &lnum1);
+        fclose(fp);
+        fp = fopen(BATT_FULL, "r");
+        fscanf(fp, "%ld\n", &lnum2);
+        fclose(fp);
+        fp = fopen(BATT_STATUS, "r");
+        fscanf(fp, "%s\n", status);
+        fclose(fp);
+        if (strcmp(status,"Charging") == 0)
+            s = '+';
+        if (strcmp(status,"Discharging") == 0)
+            s = '-';
+        if (strcmp(status,"Full") == 0)
+            s = '=';
+        return smprintf("%c%ld%%", s,(lnum1/(lnum2/100)));
+    }
+    else return smprintf("");
+}
+
+
+
 
