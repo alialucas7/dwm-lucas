@@ -5,7 +5,11 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+<<<<<<< HEAD
 static const char *fonts[]          = { "monospace:size=12" };
+=======
+static const char *fonts[]          = { "monospace:size=10" };
+>>>>>>> 2c506d55e4401def2e959c763326662d781d458c
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -35,7 +39,10 @@ static const Rule rules[] = {
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+<<<<<<< HEAD
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+=======
+>>>>>>> 2c506d55e4401def2e959c763326662d781d458c
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -57,6 +64,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+<<<<<<< HEAD
 //static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *chrome[]   = {"google-chrome-unstable", NULL};
@@ -67,6 +75,13 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,			XK_j,	   spawn,	   {.v = thunare } },
 	{ MODKEY,			XK_o,	   spawn,	   {.v = chrome } },
+=======
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]  = { "st", NULL };
+
+static Key keys[] = {
+	/* modifier                     key        function        argument */
+>>>>>>> 2c506d55e4401def2e959c763326662d781d458c
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -119,3 +134,61 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+<<<<<<< HEAD
+=======
+
+#define BATT_NOW        "/sys/class/power_supply/BAT0/charge_now"
+#define BATT_FULL       "/sys/class/power_supply/BAT0/charge_full"
+#define BATT_STATUS       "/sys/class/power_supply/BAT0/status"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
+char *
+smprintf(char *fmt, ...)
+{
+	va_list fmtargs;
+	char *buf = NULL;
+
+	va_start(fmtargs, fmt);
+	if (vasprintf(&buf, fmt, fmtargs) == -1){
+		fprintf(stderr, "malloc vasprintf\n");
+		exit(1);
+    }
+	va_end(fmtargs);
+
+	return buf;
+}
+
+char *
+getbattery(){
+    long lnum1, lnum2 = 0;
+    char *status = malloc(sizeof(char)*12);
+    char s = '?';
+    FILE *fp = NULL;
+    if ((fp = fopen(BATT_NOW, "r"))) {
+        fscanf(fp, "%ld\n", &lnum1);
+        fclose(fp);
+        fp = fopen(BATT_FULL, "r");
+        fscanf(fp, "%ld\n", &lnum2);
+        fclose(fp);
+        fp = fopen(BATT_STATUS, "r");
+        fscanf(fp, "%s\n", status);
+        fclose(fp);
+        if (strcmp(status,"Charging") == 0)
+            s = '+';
+        if (strcmp(status,"Discharging") == 0)
+            s = '-';
+        if (strcmp(status,"Full") == 0)
+            s = '=';
+        return smprintf("%c%ld%%", s,(lnum1/(lnum2/100)));
+    }
+    else return smprintf("");
+}
+
+
+
+
+>>>>>>> 2c506d55e4401def2e959c763326662d781d458c
