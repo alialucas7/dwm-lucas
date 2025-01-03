@@ -693,8 +693,7 @@ dirtomon(int dir)
 	return m;
 }
 
-void
-drawbar(Monitor *m)
+void drawbar(Monitor *m)
 {
         int x, w, tw = 0;
         int tlpad;
@@ -752,6 +751,11 @@ drawbar(Monitor *m)
         }
         drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
+
+
+
+
+
 
 void
 drawbars(void)
@@ -1558,7 +1562,7 @@ setup(void)
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
-	bh = drw->fonts->h + 2;
+	bh = drw->fonts->h + 5;
 	updategeom();
 	/* init atoms */
 	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
@@ -1838,8 +1842,8 @@ updatebars(void)
 void
 updatebarpos(Monitor *m)
 {
-	m->wy = m->my;
-	m->wh = m->mh;
+	m->wy = m->my + 5;
+	m->wh = m->mh - bh -2;
 	if (m->showbar) {
 		m->wh -= bh;
 		m->by = m->topbar ? m->wy : m->wy + m->wh;

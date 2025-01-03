@@ -21,7 +21,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { " ", "2", " ", "4", "5", "6", "", "8", " " };
+static const char *tags[] = { " ", "2", " ", "4", "5", "6", " ", "8", " " };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -68,6 +68,7 @@ static const char *dmenucmd[] = {"rofi", "-show", "run" ,NULL};
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,			XK_n,	   spawn,	   {.v = thunare } },
+	{ MODKEY,			XK_s,	   spawn,	   SHCMD("sudo systemctl suspend") },
 	{ MODKEY,			XK_o,	   spawn,	   {.v = chrome } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
