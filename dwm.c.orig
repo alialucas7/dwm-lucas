@@ -1843,7 +1843,7 @@ void
 updatebarpos(Monitor *m)
 {
 	m->wy = m->my + 5;
-	m->wh = m->mh - bh -5;
+	m->wh = m->mh - bh -2;
 	if (m->showbar) {
 		m->wh -= bh;
 		m->by = m->topbar ? m->wy : m->wy + m->wh;

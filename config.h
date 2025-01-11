@@ -21,7 +21,9 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { " ", "2", " ", "4", "5", "6", " ", "8", " " };
+//static const char *tags[] = { " ", "2", " ", "4", "5", "6", " ", "8", " " };
+
+static const char *tags[] = { "1", "2", "3", "4"};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -38,6 +40,18 @@ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 5;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+
+
+
+/*mis variables lucas*/
+static const unsigned int ulinepad = 5;
+
+static const unsigned int ulinestroke = 2;
+
+static const unsigned int ulinevoffset = 0;
+
+static const unsigned int ulineall = 0;
+
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
